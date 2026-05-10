@@ -1,7 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { adminApi, adminFinanceApi, type FinanceTransaction } from "@/lib/api-client";
+import {
+  adminApi,
+  adminFinanceApi,
+  type FinanceTransaction,
+} from "@/lib/api-client";
 import { Card } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
 import { useToast } from "@/hooks/use-toast";

@@ -440,7 +440,10 @@ export const adminFinanceApi = {
     const response = await apiRequest<{ transactions: FinanceTransaction[] }>(
       "/api/admin/finance/transactions",
     );
-    return (response.data as { transactions: FinanceTransaction[] }).transactions || [];
+    return (
+      (response.data as { transactions: FinanceTransaction[] }).transactions ||
+      []
+    );
   },
 };
 

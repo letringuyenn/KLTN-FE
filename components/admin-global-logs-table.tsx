@@ -56,8 +56,7 @@ export function AdminGlobalLogsTable() {
   const searchParams = useSearchParams();
 
   const activeAnalysisId = searchParams.get("analysisId");
-  const selectedLog =
-    logs.find((log) => log._id === activeAnalysisId) || null;
+  const selectedLog = logs.find((log) => log._id === activeAnalysisId) || null;
 
   const fetchLogs = useCallback(
     async (page = 1, status?: string) => {
@@ -210,7 +209,8 @@ export function AdminGlobalLogsTable() {
                     Suggested Fix
                   </p>
                   <p className="mt-1 whitespace-pre-wrap text-slate-200">
-                    {selectedLog.aiResult?.suggestedFix || "No suggested fix yet"}
+                    {selectedLog.aiResult?.suggestedFix ||
+                      "No suggested fix yet"}
                   </p>
                 </div>
               </div>
@@ -255,182 +255,182 @@ export function AdminGlobalLogsTable() {
       </Dialog>
 
       <div className="space-y-4">
-      {/* Status Filter */}
-      <div className="flex items-center gap-2 flex-wrap">
-        <span className="text-xs text-muted-foreground">Filter:</span>
-        {statusOptions.map((s) => (
-          <button
-            key={s}
-            onClick={() => setStatusFilter(s)}
-            className={`px-2.5 py-1 rounded-full text-xs font-medium border transition-colors ${
-              statusFilter === s
-                ? "bg-blue-600/30 border-blue-500 text-blue-200"
-                : "bg-slate-800 border-slate-700 text-slate-400 hover:border-slate-600"
-            }`}
-          >
-            {s === "ALL" ? "All" : s}
-          </button>
-        ))}
-        {pagination.total > 0 && (
-          <span className="text-xs text-muted-foreground ml-2">
-            {pagination.total} results
-          </span>
-        )}
-      </div>
-
-      {/* Table */}
-      {logs.length === 0 ? (
-        <div className="flex flex-col items-center justify-center h-48 text-center">
-          <p className="text-muted-foreground">No analysis logs found.</p>
+        {/* Status Filter */}
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-xs text-muted-foreground">Filter:</span>
+          {statusOptions.map((s) => (
+            <button
+              key={s}
+              onClick={() => setStatusFilter(s)}
+              className={`px-2.5 py-1 rounded-full text-xs font-medium border transition-colors ${
+                statusFilter === s
+                  ? "bg-blue-600/30 border-blue-500 text-blue-200"
+                  : "bg-slate-800 border-slate-700 text-slate-400 hover:border-slate-600"
+              }`}
+            >
+              {s === "ALL" ? "All" : s}
+            </button>
+          ))}
+          {pagination.total > 0 && (
+            <span className="text-xs text-muted-foreground ml-2">
+              {pagination.total} results
+            </span>
+          )}
         </div>
-      ) : (
-        <div className="w-full overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border">
-                <th className="text-left py-3 px-4 font-semibold text-foreground">
-                  User
-                </th>
-                <th className="text-left py-3 px-4 font-semibold text-foreground">
-                  Repository
-                </th>
-                <th className="text-left py-3 px-4 font-semibold text-foreground">
-                  Status
-                </th>
-                <th className="text-left py-3 px-4 font-semibold text-foreground">
-                  Severity
-                </th>
-                <th className="text-left py-3 px-4 font-semibold text-foreground">
-                  Analysis
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {logs.map((log, index) => (
-                <tr
-                  key={log._id}
-                  className={`border-b border-border/50 transition-colors ${
-                    index % 2 === 0 ? "bg-card/30" : "bg-card/10"
-                  } hover:bg-secondary/20`}
-                >
-                  {/* User */}
-                  <td className="py-3 px-4">
-                    <div className="flex items-center gap-2">
-                      {getUserAvatar(log.userId) ? (
-                        <img
-                          src={getUserAvatar(log.userId)!}
-                          alt=""
-                          className="w-6 h-6 rounded-full border border-slate-700"
-                        />
-                      ) : (
-                        <div className="w-6 h-6 rounded-full bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-400">
-                          {getUserDisplay(log.userId).charAt(0).toUpperCase()}
-                        </div>
-                      )}
-                      <div>
-                        <p className="text-xs font-medium text-foreground">
-                          {getUserDisplay(log.userId)}
-                        </p>
-                        {getUserGithubId(log.userId) && (
-                          <p className="text-[10px] text-muted-foreground font-mono">
-                            #{getUserGithubId(log.userId)}
+
+        {/* Table */}
+        {logs.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-48 text-center">
+            <p className="text-muted-foreground">No analysis logs found.</p>
+          </div>
+        ) : (
+          <div className="w-full overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-border">
+                  <th className="text-left py-3 px-4 font-semibold text-foreground">
+                    User
+                  </th>
+                  <th className="text-left py-3 px-4 font-semibold text-foreground">
+                    Repository
+                  </th>
+                  <th className="text-left py-3 px-4 font-semibold text-foreground">
+                    Status
+                  </th>
+                  <th className="text-left py-3 px-4 font-semibold text-foreground">
+                    Severity
+                  </th>
+                  <th className="text-left py-3 px-4 font-semibold text-foreground">
+                    Analysis
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {logs.map((log, index) => (
+                  <tr
+                    key={log._id}
+                    className={`border-b border-border/50 transition-colors ${
+                      index % 2 === 0 ? "bg-card/30" : "bg-card/10"
+                    } hover:bg-secondary/20`}
+                  >
+                    {/* User */}
+                    <td className="py-3 px-4">
+                      <div className="flex items-center gap-2">
+                        {getUserAvatar(log.userId) ? (
+                          <img
+                            src={getUserAvatar(log.userId)!}
+                            alt=""
+                            className="w-6 h-6 rounded-full border border-slate-700"
+                          />
+                        ) : (
+                          <div className="w-6 h-6 rounded-full bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-400">
+                            {getUserDisplay(log.userId).charAt(0).toUpperCase()}
+                          </div>
+                        )}
+                        <div>
+                          <p className="text-xs font-medium text-foreground">
+                            {getUserDisplay(log.userId)}
                           </p>
+                          {getUserGithubId(log.userId) && (
+                            <p className="text-[10px] text-muted-foreground font-mono">
+                              #{getUserGithubId(log.userId)}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </td>
+
+                    {/* Repository */}
+                    <td className="py-3 px-4">
+                      <p className="text-xs font-mono text-foreground">
+                        {log.repoFullName || "N/A"}
+                      </p>
+                      <div className="flex items-center gap-1.5 mt-0.5">
+                        <span className="inline-flex rounded-full border border-blue-500/40 bg-blue-500/15 px-1.5 py-0 text-[10px] font-medium text-blue-200">
+                          {log.branchName || "main"}
+                        </span>
+                        {log.runId && (
+                          <span className="text-[10px] text-muted-foreground font-mono">
+                            #{log.runId}
+                          </span>
                         )}
                       </div>
-                    </div>
-                  </td>
+                    </td>
 
-                  {/* Repository */}
-                  <td className="py-3 px-4">
-                    <p className="text-xs font-mono text-foreground">
-                      {log.repoFullName || "N/A"}
-                    </p>
-                    <div className="flex items-center gap-1.5 mt-0.5">
-                      <span className="inline-flex rounded-full border border-blue-500/40 bg-blue-500/15 px-1.5 py-0 text-[10px] font-medium text-blue-200">
-                        {log.branchName || "main"}
+                    {/* Status */}
+                    <td className="py-3 px-4">
+                      <span
+                        className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-medium ${
+                          STATUS_COLORS[log.status || ""] ||
+                          "bg-gray-500/20 text-gray-300 border border-gray-500/30"
+                        }`}
+                      >
+                        {log.status || "UNKNOWN"}
                       </span>
-                      {log.runId && (
-                        <span className="text-[10px] text-muted-foreground font-mono">
-                          #{log.runId}
-                        </span>
-                      )}
-                    </div>
-                  </td>
+                    </td>
 
-                  {/* Status */}
-                  <td className="py-3 px-4">
-                    <span
-                      className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-medium ${
-                        STATUS_COLORS[log.status || ""] ||
-                        "bg-gray-500/20 text-gray-300 border border-gray-500/30"
-                      }`}
-                    >
-                      {log.status || "UNKNOWN"}
-                    </span>
-                  </td>
+                    {/* Severity */}
+                    <td className="py-3 px-4">
+                      <span
+                        className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-medium ${
+                          SEVERITY_COLORS[log.severity || ""] ||
+                          "bg-gray-500/20 text-gray-300 border border-gray-500/30"
+                        }`}
+                      >
+                        {log.severity || "—"}
+                      </span>
+                    </td>
 
-                  {/* Severity */}
-                  <td className="py-3 px-4">
-                    <span
-                      className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-medium ${
-                        SEVERITY_COLORS[log.severity || ""] ||
-                        "bg-gray-500/20 text-gray-300 border border-gray-500/30"
-                      }`}
-                    >
-                      {log.severity || "—"}
-                    </span>
-                  </td>
-
-                  {/* Analysis */}
-                  <td className="py-3 px-4">
-                    <Link
-                      href={`/admin/history?analysisId=${log._id}`}
-                      className="text-blue-300 underline underline-offset-4 hover:text-blue-200 text-xs"
-                    >
-                      View Details
-                    </Link>
-                    <p className="mt-0.5 max-w-xs truncate text-[11px] text-muted-foreground">
-                      {log.aiResult?.rootCause || "No analysis yet"}
-                    </p>
-                    <p className="text-[10px] text-muted-foreground/60">
-                      {formatDate(log.createdAt)}
-                    </p>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-
-      {/* Pagination */}
-      {pagination.pages > 1 && (
-        <div className="flex items-center justify-between pt-2">
-          <p className="text-xs text-muted-foreground">
-            Page {pagination.page} of {pagination.pages}
-          </p>
-          <div className="flex gap-2">
-            <Button
-              size="sm"
-              variant="outline"
-              disabled={pagination.page <= 1}
-              onClick={() => fetchLogs(pagination.page - 1, statusFilter)}
-              className="text-xs"
-            >
-              Previous
-            </Button>
-            <Button
-              size="sm"
-              variant="outline"
-              disabled={pagination.page >= pagination.pages}
-              onClick={() => fetchLogs(pagination.page + 1, statusFilter)}
-              className="text-xs"
-            >
-              Next
-            </Button>
+                    {/* Analysis */}
+                    <td className="py-3 px-4">
+                      <Link
+                        href={`/admin/history?analysisId=${log._id}`}
+                        className="text-blue-300 underline underline-offset-4 hover:text-blue-200 text-xs"
+                      >
+                        View Details
+                      </Link>
+                      <p className="mt-0.5 max-w-xs truncate text-[11px] text-muted-foreground">
+                        {log.aiResult?.rootCause || "No analysis yet"}
+                      </p>
+                      <p className="text-[10px] text-muted-foreground/60">
+                        {formatDate(log.createdAt)}
+                      </p>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-        </div>
-      )}
+        )}
+
+        {/* Pagination */}
+        {pagination.pages > 1 && (
+          <div className="flex items-center justify-between pt-2">
+            <p className="text-xs text-muted-foreground">
+              Page {pagination.page} of {pagination.pages}
+            </p>
+            <div className="flex gap-2">
+              <Button
+                size="sm"
+                variant="outline"
+                disabled={pagination.page <= 1}
+                onClick={() => fetchLogs(pagination.page - 1, statusFilter)}
+                className="text-xs"
+              >
+                Previous
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                disabled={pagination.page >= pagination.pages}
+                onClick={() => fetchLogs(pagination.page + 1, statusFilter)}
+                className="text-xs"
+              >
+                Next
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
