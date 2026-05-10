@@ -82,6 +82,24 @@ export interface DocumentationDoc {
   updatedAt: string;
 }
 
+export interface FinanceTransaction {
+  _id: string;
+  userId:
+    | string
+    | {
+        _id: string;
+        username: string;
+        githubId: string;
+        avatar?: string;
+        role: "USER" | "ADMIN";
+      };
+  amount: number;
+  currency: string;
+  status: "PENDING" | "COMPLETED" | "FAILED" | "REFUNDED";
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface UserProfile {
   id: string;
   username: string;
@@ -418,11 +436,11 @@ export const adminApi = {
 };
 
 export const adminFinanceApi = {
-  async getTransactions(): Promise<unknown[]> {
-    const response = await apiRequest<{ transactions: unknown[] }>(
+  async getTransactions(): Promise<FinanceTransaction[]> {
+    const response = await apiRequest<{ transactions: FinanceTransaction[] }>(
       "/api/admin/finance/transactions",
     );
-    return (response.data as { transactions: unknown[] }).transactions || [];
+    return (response.data as { transactions: FinanceTransaction[] }).transactions || [];
   },
 };
 

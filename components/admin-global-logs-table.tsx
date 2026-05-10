@@ -13,32 +13,11 @@ import {
 } from "@/components/ui/dialog";
 import { Spinner } from "@/components/ui/spinner";
 import { useToast } from "@/hooks/use-toast";
+import type { AnalysisResult } from "@/lib/api-client";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
-interface AnalysisLog {
-  _id: string;
-  userId:
-    | string
-    | {
-        _id: string;
-        username: string;
-        githubId?: string;
-        avatar?: string;
-        role?: string;
-      }
-    | null;
-  repoFullName: string;
-  runId?: string;
-  branchName?: string;
-  severity?: "CRITICAL" | "HIGH" | "MEDIUM" | "LOW";
-  aiResult?: {
-    rootCause?: string;
-    suggestedFix?: string;
-  };
-  status?: string;
-  createdAt: string;
-}
+type AnalysisLog = AnalysisResult;
 
 interface Pagination {
   page: number;

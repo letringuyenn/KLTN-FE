@@ -12,6 +12,14 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  webpack: (config) => {
+    config.resolve.alias = {
+      ...(config.resolve.alias || {}),
+      "@": frontendRoot,
+    };
+
+    return config;
+  },
   turbopack: {
     root: frontendRoot,
   },

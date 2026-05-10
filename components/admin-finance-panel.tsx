@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { adminApi, adminFinanceApi } from "@/lib/api-client";
+import { adminApi, adminFinanceApi, type FinanceTransaction } from "@/lib/api-client";
 import { Card } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
 import { useToast } from "@/hooks/use-toast";
@@ -11,24 +11,6 @@ interface FinanceData {
   proUsers: number;
   totalUsers: number;
   totalProfitUsd: number;
-}
-
-interface FinanceTransaction {
-  _id: string;
-  userId:
-    | string
-    | {
-        _id: string;
-        username: string;
-        githubId: string;
-        avatar?: string;
-        role: "USER" | "ADMIN";
-      };
-  amount: number;
-  currency: string;
-  status: "PENDING" | "COMPLETED" | "FAILED" | "REFUNDED";
-  createdAt: string;
-  updatedAt: string;
 }
 
 const EMPTY_STATE_MESSAGE =
