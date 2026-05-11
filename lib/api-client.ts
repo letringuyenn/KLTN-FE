@@ -4,6 +4,8 @@ const DEFAULT_FETCH_OPTIONS: RequestInit = {
   credentials: "include",
 };
 
+const OAUTH_TRANSACTION_KEY = "oauth:github:tx";
+
 interface ApiError {
   message: string;
   status?: number;
@@ -15,6 +17,11 @@ interface ApiResponse<T = unknown> {
   data?: T;
   error?: string;
   message?: string;
+}
+
+interface OAuthTransaction {
+  state: string;
+  createdAt: number;
 }
 
 export interface AnalysisResult {
@@ -111,6 +118,41 @@ export interface UserProfile {
   isFirstLogin?: boolean;
   githubId?: string;
   hasCustomGeminiKey?: boolean;
+}
+
+function generateSecureState(size: number = 32): string {
+  const chars =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  if (typeof window !== "undefined" && window.crypto?.getRandomValues) {
+    const randomValues = new Uint8Array(size);
+    window.crypto.getRandomValues(randomValues);
+    return Array.from(randomValues, (value) => chars[value % chars.length]).join(
+      "",
+    );
+  }
+
+  return Array.from({ length: size }, () => {
+    return chars[Math.floor(Math.random() * chars.length)];
+  }).join("");
+}
+
+function createOAuthTransaction(): string {
+  const state = generateSecureState();
+
+  if (typeof window !== "undefined") {
+    const payload: OAuthTransaction = {
+      state,
+      createdAt: Date.now(),
+    };
+
+    const serialized = JSON.stringify(payload);
+    sessionStorage.setItem(OAUTH_TRANSACTION_KEY, serialized);
+    sessionStorage.setItem("oauthState", state);
+    localStorage.setItem("oauth_state", state);
+  }
+
+  return state;
 }
 
 async function apiRequest<T>(
@@ -565,7 +607,9 @@ export const documentationApi = {
 };
 
 export function getGitHubAuthUrl(): string {
-  return `${API_URL}/api/auth/github/login`;
+  const state = createOAuthTransaction();
+  const params = new URLSearchParams({ state });
+  return `${API_URL}/api/auth/github/login?${params.toString()}`;
 }
 
 export default {
