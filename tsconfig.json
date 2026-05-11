@@ -2,7 +2,6 @@
   "compilerOptions": {
     "target": "ES2017",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "baseUrl": ".",
     "ignoreDeprecations": "5.0",
     "paths": {
       "@/*": ["./*"]

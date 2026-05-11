@@ -6,6 +6,14 @@
 import { getGitHubAuthUrl, authApi } from "./api-client";
 import { consumeOAuthTransaction } from "./api-client";
 
+function getAppOrigin(): string {
+  if (typeof window !== "undefined") {
+    return window.location.origin;
+  }
+
+  return process.env.NEXT_PUBLIC_APP_URL || "";
+}
+
 // 1. ĐỊNH NGHĨA INTERFACE ĐỂ DẬP TẮT LỖI TYPESCRIPT
 export interface AuthResponse {
   success: boolean;
@@ -21,7 +29,7 @@ export interface AuthResponse {
 
 export const GITHUB_OAUTH_CONFIG = {
   CLIENT_ID: process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID || "",
-  REDIRECT_URI: `${typeof window !== "undefined" ? window.location.origin : process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/auth/callback`,
+  REDIRECT_URI: `${getAppOrigin()}/auth/callback`,
   SCOPE: "user:email repo",
   STATE_LENGTH: 32,
 };
