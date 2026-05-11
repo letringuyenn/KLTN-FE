@@ -27,7 +27,7 @@ export function PipelineAnalyzer() {
   const pollAnalysisStatus = async (jobId: string) => {
     setPollingStatus("QUEUED");
 
-    const maxAttempts = 60; // 60 × 3s = 3 minutes max
+    const maxAttempts = 120; // 120 × 5s = 10 minutes max
     let attempts = 0;
 
     return new Promise<AnalysisResult>((resolve, reject) => {
@@ -49,6 +49,7 @@ export function PipelineAnalyzer() {
           if (statusPayload.status === "FAILED") {
             clearInterval(interval);
             setPollingStatus(null);
+            console.error("🔥 Trạng thái Job bị FAILED. Phản hồi gốc từ API:", statusPayload);
             reject(new Error(statusPayload.errorMessage || "Analysis failed"));
             return;
           }
@@ -63,7 +64,7 @@ export function PipelineAnalyzer() {
           setPollingStatus(null);
           reject(error);
         }
-      }, 3000);
+      }, 5000);
     });
   };
 
@@ -115,7 +116,9 @@ export function PipelineAnalyzer() {
         return;
       }
 
-      console.error("Analysis error:", error);
+      console.error("🔥 Lỗi phía front-end khi thực hiện handleAnalyze:", error);
+      console.error("💡 Chi tiết API Error Data:", apiError?.data || "Không có dữ liệu thêm");
+      
       toast({
         title: "Analysis Failed",
         description: errorMessage,
