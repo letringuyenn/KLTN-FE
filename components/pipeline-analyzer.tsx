@@ -49,7 +49,10 @@ export function PipelineAnalyzer() {
           if (statusPayload.status === "FAILED") {
             clearInterval(interval);
             setPollingStatus(null);
-            console.error("🔥 Trạng thái Job bị FAILED. Phản hồi gốc từ API:", statusPayload);
+            console.error(
+              "🔥 Trạng thái Job bị FAILED. Phản hồi gốc từ API:",
+              statusPayload,
+            );
             reject(new Error(statusPayload.errorMessage || "Analysis failed"));
             return;
           }
@@ -116,9 +119,15 @@ export function PipelineAnalyzer() {
         return;
       }
 
-      console.error("🔥 Lỗi phía front-end khi thực hiện handleAnalyze:", error);
-      console.error("💡 Chi tiết API Error Data:", apiError?.data || "Không có dữ liệu thêm");
-      
+      console.error(
+        "🔥 Lỗi phía front-end khi thực hiện handleAnalyze:",
+        error,
+      );
+      console.error(
+        "💡 Chi tiết API Error Data:",
+        apiError?.data || "Không có dữ liệu thêm",
+      );
+
       toast({
         title: "Analysis Failed",
         description: errorMessage,

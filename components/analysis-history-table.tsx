@@ -142,17 +142,11 @@ export function AnalysisHistoryTable({ data }: AnalysisHistoryTableProps) {
                   </div>
                 </td>
                 <td className="px-6 py-4">
-                  <div className="flex items-center gap-3">
-                    <span
-                      className={`inline-block px-3 py-1 rounded text-xs font-semibold ${
-                        currentStatus.color
-                      }`}
-                    >
-                      {currentStatus.label}
-                    </span>
-                    <span className="text-sm text-muted-foreground max-w-xs truncate">
-                      {record.aiResult?.rootCause || "N/A"}
-                    </span>
+                  <div
+                    className="text-sm text-muted-foreground max-w-xs truncate"
+                    title={record.aiResult?.rootCause || "N/A"}
+                  >
+                    {record.aiResult?.rootCause || "N/A"}
                   </div>
                 </td>
                 <td className="px-6 py-4">
@@ -182,11 +176,17 @@ export function AnalysisHistoryTable({ data }: AnalysisHistoryTableProps) {
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="text-accent hover:text-accent hover:bg-secondary/40"
-                      onClick={() => window.open(record.prUrl, "_blank")}
+                      className="text-blue-400 hover:text-blue-300 hover:bg-secondary/40 font-medium"
+                      asChild
                     >
-                      <span>View PR</span>
-                      <ChevronRight className="w-4 h-4 ml-2" />
+                      <a
+                        href={record.prUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <span>View PR</span>
+                        <ChevronRight className="w-4 h-4 ml-1" />
+                      </a>
                     </Button>
                   ) : (
                     <span className="text-xs text-muted-foreground">-</span>

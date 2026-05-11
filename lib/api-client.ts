@@ -127,9 +127,10 @@ function generateSecureState(size: number = 32): string {
   if (typeof window !== "undefined" && window.crypto?.getRandomValues) {
     const randomValues = new Uint8Array(size);
     window.crypto.getRandomValues(randomValues);
-    return Array.from(randomValues, (value) => chars[value % chars.length]).join(
-      "",
-    );
+    return Array.from(
+      randomValues,
+      (value) => chars[value % chars.length],
+    ).join("");
   }
 
   return Array.from({ length: size }, () => {
