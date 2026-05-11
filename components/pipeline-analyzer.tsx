@@ -27,7 +27,7 @@ export function PipelineAnalyzer() {
   const pollAnalysisStatus = async (jobId: string) => {
     setPollingStatus("QUEUED");
 
-    const maxAttempts = 120; // 120 × 5s = 10 minutes max
+    const maxAttempts = 60; // 60 × 3s = 3 minutes max
     let attempts = 0;
 
     return new Promise<AnalysisResult>((resolve, reject) => {
@@ -64,7 +64,7 @@ export function PipelineAnalyzer() {
           setPollingStatus(null);
           reject(error);
         }
-      }, 5000);
+      }, 3000);
     });
   };
 
