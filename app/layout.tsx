@@ -9,13 +9,15 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Loggers | AI CI/CD Pipeline Analyzer",
+  title: "Loggers | GitHub CI/CD Analyzer",
   description:
     "Loggers analyzes GitHub Actions failures with AI to deliver root-cause insights, suggested fixes, and faster CI/CD recovery.",
   generator: "v0.app",
   icons: {
     icon: [
-      { url: "/icon", type: "image/png", sizes: "64x64" },
+      { url: "/logo.svg", type: "image/svg+xml" },
+      { url: "/logo.png", type: "image/png", sizes: "32x32" },
+      { url: "/favicon.ico", type: "image/x-icon", sizes: "any" },
       { url: "/icon", type: "image/png", sizes: "32x32" },
     ],
     apple: [{ url: "/apple-icon", sizes: "180x180", type: "image/png" }],

@@ -11,6 +11,50 @@ export interface UserProfile {
   hasCustomGeminiKey?: boolean;
 }
 
+const AVATAR_FIELD_CANDIDATES = [
+  "avatar",
+  "avatar_url",
+  "avatarUrl",
+  "image",
+  "imageUrl",
+  "picture",
+  "photo",
+];
+
+export function resolveAvatarUrl(raw: unknown): string | undefined {
+  if (typeof raw === "string") {
+    const value = raw.trim();
+
+    if (
+      value.length > 0 &&
+      (value.startsWith("http://") ||
+        value.startsWith("https://") ||
+        value.startsWith("/") ||
+        value.startsWith("data:"))
+    ) {
+      return value;
+    }
+
+    return undefined;
+  }
+
+  if (!raw || typeof raw !== "object") {
+    return undefined;
+  }
+
+  const payload = raw as Record<string, unknown>;
+
+  for (const fieldName of AVATAR_FIELD_CANDIDATES) {
+    const value = payload[fieldName];
+
+    if (typeof value === "string" && value.trim().length > 0) {
+      return value.trim();
+    }
+  }
+
+  return undefined;
+}
+
 export function normalizeUserProfile(raw: unknown): UserProfile {
   if (!raw || typeof raw !== "object") {
     return {
@@ -39,8 +83,10 @@ export function normalizeUserProfile(raw: unknown): UserProfile {
     role,
   };
 
-  if (typeof payload.avatar === "string" && payload.avatar.trim().length > 0) {
-    normalized.avatar = payload.avatar;
+  const avatar = resolveAvatarUrl(payload);
+
+  if (avatar) {
+    normalized.avatar = avatar;
   }
 
   if (

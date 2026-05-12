@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/use-auth";
+import { UserAvatar } from "@/components/user-avatar";
+import { resolveAvatarUrl } from "@/lib/user-utils";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
@@ -116,7 +118,11 @@ export function AdminUsersTable() {
       });
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Update failed";
-      toast({ title: "Update Failed", description: msg, variant: "destructive" });
+      toast({
+        title: "Update Failed",
+        description: msg,
+        variant: "destructive",
+      });
     } finally {
       setSaving(false);
     }
@@ -142,7 +148,8 @@ export function AdminUsersTable() {
     });
 
   const isSelf = (userId: string) =>
-    currentUser && ("_id" in currentUser ? currentUser._id : currentUser.id) === userId;
+    currentUser &&
+    ("_id" in currentUser ? currentUser._id : currentUser.id) === userId;
 
   // --- Render ---
 
@@ -196,17 +203,12 @@ export function AdminUsersTable() {
                 {/* User info */}
                 <td className="py-3 px-4">
                   <div className="flex items-center gap-3">
-                    {user.avatar ? (
-                      <img
-                        src={user.avatar}
-                        alt={user.username}
-                        className="w-8 h-8 rounded-full border border-slate-700"
-                      />
-                    ) : (
-                      <div className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-xs font-bold text-slate-300">
-                        {user.username?.charAt(0).toUpperCase() || "?"}
-                      </div>
-                    )}
+                    <UserAvatar
+                      src={resolveAvatarUrl(user)}
+                      name={user.username}
+                      size="sm"
+                      className="border border-slate-700"
+                    />
                     <div>
                       <p className="font-medium text-foreground text-sm">
                         {user.username}

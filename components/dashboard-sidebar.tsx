@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth-context";
 import { userApi } from "@/lib/api-client";
 import { useToast } from "@/hooks/use-toast";
+import { BrandLogo } from "@/components/brand-logo";
 
 export function DashboardSidebar() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
@@ -94,17 +95,11 @@ export function DashboardSidebar() {
       >
         <div className="flex h-full flex-col">
           <div className="border-b border-slate-800 px-6 py-5">
-            <div className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-600 text-sm font-bold text-white">
-                AI
-              </div>
-              <div>
-                <p className="text-sm font-semibold text-slate-100">
-                  AI CI/CD Analyzer
-                </p>
-                <p className="text-xs text-slate-400">Client Workspace</p>
-              </div>
-            </div>
+            <BrandLogo
+              size="sm"
+              title="AI CI/CD Analyzer"
+              subtitle="Client Workspace"
+            />
           </div>
 
           <div className="px-6 py-5">

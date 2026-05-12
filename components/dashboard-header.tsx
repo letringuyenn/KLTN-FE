@@ -6,6 +6,9 @@ import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth-context";
 import { feedbackApi } from "@/lib/api-client";
+import { BrandLogo } from "@/components/brand-logo";
+import { UserAvatar } from "@/components/user-avatar";
+import { resolveAvatarUrl } from "@/lib/user-utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -90,22 +93,11 @@ export function DashboardHeader() {
     });
   };
 
-  const getUserInitials = () => {
-    if (!user?.username) return "U";
-    return user.username.slice(0, 2).toUpperCase();
-  };
-
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-card">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">AI</span>
-            </div>
-            <h1 className="text-xl font-bold text-foreground">LOGGERS</h1>
-          </div>
+          <BrandLogo size="sm" title="LOGGERS" />
 
           {/* Navigation & User Menu */}
           <div className="flex items-center gap-4">
@@ -208,11 +200,12 @@ export function DashboardHeader() {
                   size="sm"
                   className="border-border hover:bg-secondary"
                 >
-                  <div className="w-6 h-6 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center">
-                    <span className="text-white text-xs font-bold">
-                      {getUserInitials()}
-                    </span>
-                  </div>
+                  <UserAvatar
+                    src={resolveAvatarUrl(user)}
+                    name={user?.username}
+                    size="sm"
+                    className="border border-border"
+                  />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">

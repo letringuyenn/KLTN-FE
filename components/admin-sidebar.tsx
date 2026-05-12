@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { BrandLogo } from "@/components/brand-logo";
 
 const navItems: Array<{ href: string; label: string }> = [
   { href: "/admin/docs", label: "Documentation" },
@@ -17,8 +18,11 @@ export function AdminSidebar() {
   return (
     <aside className="w-64 border-r border-slate-800 bg-slate-900 text-slate-200 flex flex-col flex-shrink-0">
       <div className="border-b border-slate-800 p-5">
-        <h1 className="text-lg font-bold text-white">Platform Admin</h1>
-        <p className="mt-1 text-xs text-slate-400">Isolated Admin Workspace</p>
+        <BrandLogo
+          size="sm"
+          title="Loggers Admin"
+          subtitle="Isolated Admin Workspace"
+        />
       </div>
 
       <nav className="flex-1 p-3 space-y-2 overflow-y-auto">

@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { getGitHubAuthUrl } from "@/lib/api-client";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/lib/auth-context";
+import { BrandLogo } from "@/components/brand-logo";
 
 /**
  * ARCHITECTURE PATTERN: Suspense Boundary for useSearchParams()
@@ -137,29 +138,15 @@ function LoginContent() {
       <div className="relative z-10 w-full max-w-[94vw] sm:max-w-md md:max-w-lg">
         {/* Logo/Header */}
         <div className="mb-8 text-center sm:mb-10 md:mb-12">
-          <div className="mb-3 inline-flex items-center justify-center gap-2 sm:mb-4 sm:gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-blue-400 to-blue-600 shadow-lg shadow-blue-500/25 sm:h-12 sm:w-12">
-              <svg
-                className="h-6 w-6 text-white sm:h-7 sm:w-7"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 10V3L4 14h7v7l9-11h-7z"
-                />
-              </svg>
-            </div>
-          </div>
-          <h1 className="mb-2 text-2xl font-bold text-foreground sm:text-3xl md:text-4xl">
-            AI CI/CD Analyzer
-          </h1>
-          <p className="text-xs text-muted-foreground sm:text-sm md:text-base">
-            Debug GitHub Actions in seconds with AI-powered insights
-          </p>
+          <BrandLogo
+            centered
+            size="lg"
+            title="Loggers"
+            subtitle="AI CI/CD Analyzer"
+            className="justify-center"
+            titleClassName="text-2xl font-bold sm:text-3xl md:text-4xl"
+            subtitleClassName="text-xs sm:text-sm md:text-base"
+          />
         </div>
 
         {/* Error Alert - shown if OAuth callback fails */}

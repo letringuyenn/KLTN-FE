@@ -6,6 +6,8 @@ import { AuthGuard } from "@/lib/protected-route";
 import { useAuth } from "@/lib/auth-context";
 import { DashboardHeader } from "@/components/dashboard-header";
 import { DashboardSidebar } from "@/components/dashboard-sidebar";
+import { UserAvatar } from "@/components/user-avatar";
+import { resolveAvatarUrl } from "@/lib/user-utils";
 
 function SettingsContent() {
   const router = useRouter();
@@ -50,19 +52,12 @@ function SettingsContent() {
 
                 <div className="rounded-xl border border-blue-500/20 bg-background/70 p-4 sm:p-5">
                   <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-                    <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border border-border bg-secondary">
-                      {user?.avatar ? (
-                        <img
-                          src={user.avatar}
-                          alt="User avatar"
-                          className="h-full w-full object-cover"
-                        />
-                      ) : (
-                        <span className="text-lg font-semibold text-foreground">
-                          {(user?.username || "U").slice(0, 2).toUpperCase()}
-                        </span>
-                      )}
-                    </div>
+                    <UserAvatar
+                      src={resolveAvatarUrl(user)}
+                      name={user?.username}
+                      size="lg"
+                      className="border border-border"
+                    />
 
                     <div className="grid min-w-0 flex-1 grid-cols-1 gap-4 sm:grid-cols-2">
                       <div>

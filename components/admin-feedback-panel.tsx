@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
 import { useToast } from "@/hooks/use-toast";
+import { UserAvatar } from "@/components/user-avatar";
+import { resolveAvatarUrl } from "@/lib/user-utils";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
@@ -36,7 +38,10 @@ interface Pagination {
 export function AdminFeedbackPanel() {
   const [tickets, setTickets] = useState<FeedbackTicket[]>([]);
   const [pagination, setPagination] = useState<Pagination>({
-    page: 1, limit: 20, total: 0, pages: 0,
+    page: 1,
+    limit: 20,
+    total: 0,
+    pages: 0,
   });
   const [loading, setLoading] = useState(true);
 
@@ -50,27 +55,31 @@ export function AdminFeedbackPanel() {
 
   const { toast } = useToast();
 
-  const fetchTickets = useCallback(async (page = 1) => {
-    try {
-      setLoading(true);
-      const res = await fetch(
-        `${API_URL}/api/admin/feedbacks?page=${page}&limit=20`,
-        { credentials: "include" },
-      );
-      if (!res.ok) throw new Error("Failed to fetch feedback tickets");
-      const data = await res.json();
-      setTickets(data.feedback || []);
-      setPagination(
-        data.pagination || { page: 1, limit: 20, total: 0, pages: 0 },
-      );
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : "Error loading feedback";
-      toast({ title: "Error", description: msg, variant: "destructive" });
-      setTickets([]);
-    } finally {
-      setLoading(false);
-    }
-  }, [toast]);
+  const fetchTickets = useCallback(
+    async (page = 1) => {
+      try {
+        setLoading(true);
+        const res = await fetch(
+          `${API_URL}/api/admin/feedbacks?page=${page}&limit=20`,
+          { credentials: "include" },
+        );
+        if (!res.ok) throw new Error("Failed to fetch feedback tickets");
+        const data = await res.json();
+        setTickets(data.feedback || []);
+        setPagination(
+          data.pagination || { page: 1, limit: 20, total: 0, pages: 0 },
+        );
+      } catch (err) {
+        const msg =
+          err instanceof Error ? err.message : "Error loading feedback";
+        toast({ title: "Error", description: msg, variant: "destructive" });
+        setTickets([]);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [toast],
+  );
 
   useEffect(() => {
     fetchTickets();
@@ -114,7 +123,11 @@ export function AdminFeedbackPanel() {
       });
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Resolve failed";
-      toast({ title: "Resolve Failed", description: msg, variant: "destructive" });
+      toast({
+        title: "Resolve Failed",
+        description: msg,
+        variant: "destructive",
+      });
     } finally {
       setSubmitting(false);
     }
@@ -129,8 +142,11 @@ export function AdminFeedbackPanel() {
 
   const formatDate = (d: string) =>
     new Date(d).toLocaleDateString("en-US", {
-      year: "numeric", month: "short", day: "numeric",
-      hour: "2-digit", minute: "2-digit",
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
 
   const truncate = (s: string, n: number) =>
@@ -183,17 +199,12 @@ export function AdminFeedbackPanel() {
             <div className="flex items-start justify-between gap-4">
               {/* Left: user + message */}
               <div className="flex items-start gap-3 flex-1 min-w-0">
-                {ticket.userId?.avatar ? (
-                  <img
-                    src={ticket.userId.avatar}
-                    alt={ticket.userId.username}
-                    className="w-8 h-8 rounded-full border border-slate-700 flex-shrink-0 mt-0.5"
-                  />
-                ) : (
-                  <div className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-xs font-bold text-slate-300 flex-shrink-0 mt-0.5">
-                    {ticket.userId?.username?.charAt(0).toUpperCase() || "?"}
-                  </div>
-                )}
+                <UserAvatar
+                  src={resolveAvatarUrl(ticket.userId)}
+                  name={ticket.userId?.username}
+                  size="sm"
+                  className="mt-0.5 border border-slate-700"
+                />
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-sm font-medium text-foreground">

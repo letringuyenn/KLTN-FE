@@ -14,6 +14,8 @@ import {
 import { Spinner } from "@/components/ui/spinner";
 import { useToast } from "@/hooks/use-toast";
 import type { AnalysisResult } from "@/lib/api-client";
+import { UserAvatar } from "@/components/user-avatar";
+import { resolveAvatarUrl } from "@/lib/user-utils";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
@@ -94,11 +96,6 @@ export function AdminGlobalLogsTable() {
     if (!userId) return "Deleted User";
     if (typeof userId === "string") return userId;
     return userId?.username || "Unknown";
-  };
-
-  const getUserAvatar = (userId: AnalysisLog["userId"]) => {
-    if (!userId || typeof userId === "string") return null;
-    return userId?.avatar || null;
   };
 
   const getUserGithubId = (userId: AnalysisLog["userId"]) => {
@@ -316,17 +313,12 @@ export function AdminGlobalLogsTable() {
                     {/* User */}
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-2">
-                        {getUserAvatar(log.userId) ? (
-                          <img
-                            src={getUserAvatar(log.userId)!}
-                            alt=""
-                            className="w-6 h-6 rounded-full border border-slate-700"
-                          />
-                        ) : (
-                          <div className="w-6 h-6 rounded-full bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-400">
-                            {getUserDisplay(log.userId).charAt(0).toUpperCase()}
-                          </div>
-                        )}
+                        <UserAvatar
+                          src={resolveAvatarUrl(log.userId)}
+                          name={getUserDisplay(log.userId)}
+                          size="sm"
+                          className="border border-slate-700"
+                        />
                         <div>
                           <p className="text-xs font-medium text-foreground">
                             {getUserDisplay(log.userId)}
