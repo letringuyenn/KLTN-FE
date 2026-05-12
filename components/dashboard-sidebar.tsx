@@ -283,11 +283,11 @@ export function DashboardSidebar() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
           <div className="w-full max-w-md rounded-2xl border border-amber-500/40 bg-slate-900 p-6 shadow-2xl">
             <h3 className="text-lg font-bold text-amber-100">
-              Tính năng BYOK dành cho gói PRO
+              BYOK is available on the PRO plan
             </h3>
             <p className="mt-2 text-sm text-slate-300">
-              Đây là tính năng dành cho gói PRO. Vui lòng nâng cấp để sử dụng
-              API Key cá nhân của bạn.
+              This feature is only available for PRO users. Please upgrade to
+              use your personal API key.
             </p>
             <div className="mt-5 flex justify-end gap-2">
               <button
@@ -295,14 +295,14 @@ export function DashboardSidebar() {
                 onClick={() => setIsByokOpen(false)}
                 className="rounded-lg border border-slate-600 px-4 py-2 text-sm text-slate-200 hover:bg-slate-800"
               >
-                Dong
+                Close
               </button>
               <Link
                 href="/upgrade"
                 onClick={() => setIsByokOpen(false)}
                 className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-500"
               >
-                Nang cap PRO
+                Upgrade to PRO
               </Link>
             </div>
           </div>
@@ -313,10 +313,10 @@ export function DashboardSidebar() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
           <div className="w-full max-w-lg rounded-2xl border border-slate-700 bg-slate-900/95 p-6 shadow-2xl">
             <h3 className="text-xl font-semibold text-slate-100">
-              Luu BYOK cho Gemini
+              Save BYOK for Gemini
             </h3>
             <p className="mt-1 text-sm text-slate-400">
-              Key se duoc ma hoa va luu an toan tren server.
+              Your key will be encrypted and stored securely on the server.
             </p>
 
             <div className="mt-4 space-y-3">
@@ -324,7 +324,7 @@ export function DashboardSidebar() {
                 type="password"
                 value={byokKey}
                 onChange={(event) => setByokKey(event.target.value)}
-                placeholder="Nhap Gemini API key cua ban"
+                placeholder="Enter your Gemini API key"
                 className="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-2.5 text-sm text-slate-100 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30"
                 autoComplete="off"
               />
@@ -340,7 +340,7 @@ export function DashboardSidebar() {
                 }}
                 className="rounded-lg border border-slate-600 px-4 py-2 text-sm text-slate-200 hover:bg-slate-800 disabled:opacity-60"
               >
-                Huy
+                Cancel
               </button>
               <button
                 type="button"
@@ -348,8 +348,8 @@ export function DashboardSidebar() {
                 onClick={async () => {
                   if (!byokKey.trim()) {
                     toast({
-                      title: "Loi",
-                      description: "Vui long nhap Gemini API key.",
+                      title: "Error",
+                      description: "Please enter your Gemini API key.",
                       variant: "destructive",
                     });
                     return;
@@ -359,8 +359,8 @@ export function DashboardSidebar() {
                     setIsSavingByok(true);
                     await userApi.updateByok(byokKey.trim());
                     toast({
-                      title: "Thanh cong",
-                      description: "Da luu BYOK key an toan.",
+                      title: "Success",
+                      description: "Your BYOK key has been saved securely.",
                     });
                     setByokKey("");
                     setIsByokOpen(false);
@@ -368,9 +368,9 @@ export function DashboardSidebar() {
                     const message =
                       error instanceof Error
                         ? error.message
-                        : "Khong the luu BYOK key";
+                        : "Unable to save the BYOK key";
                     toast({
-                      title: "Luu that bai",
+                      title: "Save failed",
                       description: message,
                       variant: "destructive",
                     });
@@ -380,7 +380,7 @@ export function DashboardSidebar() {
                 }}
                 className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-500 disabled:opacity-60"
               >
-                {isSavingByok ? "Dang luu..." : "Luu key"}
+                {isSavingByok ? "Saving..." : "Save key"}
               </button>
             </div>
           </div>
