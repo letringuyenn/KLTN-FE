@@ -3,13 +3,7 @@
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
-const LOGO_CANDIDATES = [
-  "/logo.svg",
-  "/logo.png",
-  "/logo.webp",
-  "/favicon.ico",
-  "/icon",
-];
+const LOGO_SRC = "/logger.png";
 
 const sizeClasses = {
   sm: {
@@ -50,8 +44,7 @@ export function BrandLogo({
   titleClassName,
   subtitleClassName,
 }: BrandLogoProps) {
-  const [logoIndex, setLogoIndex] = useState(0);
-  const logoSrc = LOGO_CANDIDATES[logoIndex];
+  const [logoErrored, setLogoErrored] = useState(false);
   const initial = title.trim().charAt(0).toUpperCase() || "L";
 
   return (
@@ -69,13 +62,13 @@ export function BrandLogo({
           logoClassName,
         )}
       >
-        {logoSrc ? (
+        {!logoErrored ? (
           <img
-            src={logoSrc}
+            src={LOGO_SRC}
             alt="Brand logo"
             className="h-full w-full object-contain p-1"
             onError={() => {
-              setLogoIndex((current) => current + 1);
+              setLogoErrored(true);
             }}
           />
         ) : (

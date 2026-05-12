@@ -14,13 +14,7 @@ export const metadata: Metadata = {
     "Loggers analyzes GitHub Actions failures with AI to deliver root-cause insights, suggested fixes, and faster CI/CD recovery.",
   generator: "v0.app",
   icons: {
-    icon: [
-      { url: "/logo.svg", type: "image/svg+xml" },
-      { url: "/logo.png", type: "image/png", sizes: "32x32" },
-      { url: "/favicon.ico", type: "image/x-icon", sizes: "any" },
-      { url: "/icon", type: "image/png", sizes: "32x32" },
-    ],
-    apple: [{ url: "/apple-icon", sizes: "180x180", type: "image/png" }],
+    icon: [{ url: "/logger.png", type: "image/png", sizes: "any" }],
   },
 };
 
