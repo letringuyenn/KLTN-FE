@@ -57,7 +57,7 @@ export function BrandLogo({
     >
       <div
         className={cn(
-          "flex shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-background/80 ring-1 ring-border/60",
+          "flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-background/80 ring-1 ring-border/60",
           sizeClasses[size].logo,
           logoClassName,
         )}
@@ -66,7 +66,7 @@ export function BrandLogo({
           <img
             src={LOGO_SRC}
             alt="Brand logo"
-            className="h-full w-full object-contain p-1"
+            className="h-full w-full scale-[1.08] object-cover object-center"
             onError={() => {
               setLogoErrored(true);
             }}
