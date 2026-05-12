@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { BrandLogo } from "@/components/brand-logo";
 
 const navItems: Array<{ href: string; label: string }> = [
+  { href: "/admin/feedback", label: "Feedback" },
   { href: "/admin/docs", label: "Documentation" },
   { href: "/admin/users", label: "User Management" },
   { href: "/admin/finance", label: "Finance" },
