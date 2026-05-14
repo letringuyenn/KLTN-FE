@@ -183,7 +183,7 @@ export function DashboardSidebar() {
                     d="M12 6.253v13m0-13C6.5 6.253 2 10.998 2 17.001c0 5.591 3.824 10.29 9 11.622m0-13c5.5 0 10-4.745 10-10.999C22 5.159 17.5.413 12 .413z"
                   />
                 </svg>
-                Documentation
+                Help
               </Link>
             </nav>
           </div>

@@ -6,10 +6,7 @@ import { DashboardHeader } from "@/components/dashboard-header";
 import { DashboardSidebar } from "@/components/dashboard-sidebar";
 import { AuthGuard } from "@/lib/protected-route";
 import { Spinner } from "@/components/ui/spinner";
-import {
-  documentationApi,
-  type DocumentationDoc,
-} from "@/lib/api-client";
+import { documentationApi, type DocumentationDoc } from "@/lib/api-client";
 
 export default function DocumentationPage() {
   const [docs, setDocs] = useState<DocumentationDoc[]>([]);
@@ -112,10 +109,10 @@ export default function DocumentationPage() {
             <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
               <div className="mb-6 rounded-2xl border border-blue-500/20 bg-card/60 p-5 shadow-lg backdrop-blur sm:mb-8 sm:p-7">
                 <h2 className="text-2xl font-bold text-foreground sm:text-3xl">
-                  Documentation
+                  HELP
                 </h2>
                 <p className="mt-2 text-sm text-muted-foreground sm:text-base">
-                  Knowledge base is loaded dynamically from MongoDB.
+                  Support user use of the application.
                 </p>
               </div>
 
