@@ -476,6 +476,10 @@ export const adminApi = {
   async deleteDoc(id: string): Promise<void> {
     await apiRequest(`/api/admin/docs/${id}`, { method: "DELETE" });
   },
+
+  async restoreDoc(id: string): Promise<void> {
+    await apiRequest(`/api/admin/docs/${id}/restore`, { method: "POST" });
+  },
 };
 
 export const adminFinanceApi = {

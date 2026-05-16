@@ -16,6 +16,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { ToastAction } from "@/components/ui/toast";
 
 function AdminDocsListContent() {
   const { toast } = useToast();
@@ -25,6 +26,25 @@ function AdminDocsListContent() {
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
+  const fetchDocs = async (currentPage: number) => {
+    try {
+      setLoading(true);
+      const payload = await adminApi.getDocs(currentPage, 10);
+      setDocs(payload.docs || []);
+      setPages(payload.pagination?.pages || 1);
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Failed to load documents";
+      toast({
+        title: "Load failed",
+        description: message,
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     let mounted = true;
 
@@ -32,23 +52,21 @@ function AdminDocsListContent() {
       try {
         setLoading(true);
         const payload = await adminApi.getDocs(page, 10);
-        if (!mounted) {
-          return;
-        }
+        if (!mounted) return;
         setDocs(payload.docs || []);
         setPages(payload.pagination?.pages || 1);
       } catch (error) {
         const message =
           error instanceof Error ? error.message : "Failed to load documents";
-        toast({
-          title: "Load failed",
-          description: message,
-          variant: "destructive",
-        });
-      } finally {
         if (mounted) {
-          setLoading(false);
+          toast({
+            title: "Load failed",
+            description: message,
+            variant: "destructive",
+          });
         }
+      } finally {
+        if (mounted) setLoading(false);
       }
     };
 
@@ -74,6 +92,29 @@ function AdminDocsListContent() {
       toast({
         title: "Documentation deleted",
         description: "The article was removed successfully.",
+        action: (
+          <ToastAction
+            altText="Undo"
+            onClick={async () => {
+              try {
+                await adminApi.restoreDoc(id);
+                fetchDocs(page);
+                toast({
+                  title: "Restored",
+                  description: "The article has been restored.",
+                });
+              } catch (err) {
+                toast({
+                  title: "Restore failed",
+                  description: "Could not restore the article.",
+                  variant: "destructive",
+                });
+              }
+            }}
+          >
+            Undo
+          </ToastAction>
+        ),
       });
       setDocs((current) => current.filter((doc) => doc._id !== id));
     } catch (error) {
