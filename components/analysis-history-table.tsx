@@ -2,9 +2,16 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, FileText } from "lucide-react";
 import { Spinner } from "@/components/ui/spinner";
 import { analysisApi } from "@/lib/api-client";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 
 interface AnalysisResult {
   _id: string;
@@ -44,6 +51,7 @@ const statusConfig: Record<string, StatusVisual> = {
 export function AnalysisHistoryTable({ data }: AnalysisHistoryTableProps) {
   const [analyses, setAnalyses] = useState<AnalysisResult[]>(data || []);
   const [isLoading, setIsLoading] = useState(!data);
+  const [selectedAnalysis, setSelectedAnalysis] = useState<AnalysisResult | null>(null);
 
   useEffect(() => {
     if (data) return;
@@ -172,31 +180,78 @@ export function AnalysisHistoryTable({ data }: AnalysisHistoryTableProps) {
                   </div>
                 </td>
                 <td className="px-6 py-4 text-right">
-                  {record.prUrl ? (
+                  <div className="flex items-center justify-end gap-2">
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="text-blue-400 hover:text-blue-300 hover:bg-secondary/40 font-medium"
-                      asChild
+                      className="text-slate-400 hover:text-slate-200 hover:bg-secondary/40 font-medium"
+                      onClick={() => setSelectedAnalysis(record)}
                     >
-                      <a
-                        href={record.prUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <span>View PR</span>
-                        <ChevronRight className="w-4 h-4 ml-1" />
-                      </a>
+                      <FileText className="w-4 h-4 mr-1" />
+                      <span>Details</span>
                     </Button>
-                  ) : (
-                    <span className="text-xs text-muted-foreground">-</span>
-                  )}
+                    {record.prUrl ? (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-blue-400 hover:text-blue-300 hover:bg-secondary/40 font-medium"
+                        asChild
+                      >
+                        <a
+                          href={record.prUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <span>View PR</span>
+                          <ChevronRight className="w-4 h-4 ml-1" />
+                        </a>
+                      </Button>
+                    ) : (
+                      <span className="text-xs text-muted-foreground w-[72px] text-center inline-block">-</span>
+                    )}
+                  </div>
                 </td>
               </tr>
             );
           })}
         </tbody>
       </table>
+
+      <Dialog open={!!selectedAnalysis} onOpenChange={(open) => !open && setSelectedAnalysis(null)}>
+        <DialogContent className="max-w-2xl bg-slate-900 border-slate-800 text-slate-200">
+          <DialogHeader>
+            <DialogTitle className="text-xl">Analysis Details</DialogTitle>
+            <DialogDescription className="text-slate-400">
+              Review the root cause and suggested fix for this analysis.
+            </DialogDescription>
+          </DialogHeader>
+          {selectedAnalysis && (
+            <div className="space-y-4 mt-4">
+              <div>
+                <h4 className="text-sm font-semibold text-slate-300 mb-1">Repository</h4>
+                <div className="flex items-center gap-2">
+                  <span className="text-slate-200 font-medium">{selectedAnalysis.repoFullName}</span>
+                  <span className="inline-flex rounded-full border border-blue-500/40 bg-blue-500/15 px-2 py-0.5 text-xs font-semibold text-blue-200">
+                    {selectedAnalysis.branchName || "main"}
+                  </span>
+                </div>
+              </div>
+              <div>
+                <h4 className="text-sm font-semibold text-red-300 mb-1">Root Cause</h4>
+                <div className="p-3 bg-red-950/20 border border-red-900/30 rounded-md whitespace-pre-wrap text-sm text-slate-300">
+                  {selectedAnalysis.aiResult?.rootCause || "No root cause identified."}
+                </div>
+              </div>
+              <div>
+                <h4 className="text-sm font-semibold text-green-300 mb-1">Suggested Fix</h4>
+                <div className="p-3 bg-green-950/20 border border-green-900/30 rounded-md whitespace-pre-wrap text-sm text-slate-300 font-mono">
+                  {selectedAnalysis.aiResult?.suggestedFix || "No fix suggested."}
+                </div>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
